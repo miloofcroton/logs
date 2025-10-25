@@ -21,14 +21,14 @@ use std::io::Error;
 //   }
 // }
 
-fn extractErrors(text: &str) -> Vec<&str> {
+fn extractErrors(text: &str) -> Vec<String> {
   let splitText = text.split("\n");
 
   let mut results = vec![];
 
   for line in splitText {
     if line.starts_with("ERROR") {
-      results.push(line);
+      results.push(line.to_string());
     }
   }
 
@@ -50,13 +50,20 @@ fn main() {
   //   Err(errMsg) => println!("{}", errMsg),
   // }
 
+  let mut errorLogs = vec![];
+
   match fs::read_to_string("logs.txt") {
     Ok(text) => {
-      let errorLogs = extractErrors(&text);
-      println!("{:#?}", errorLogs)
+      errorLogs = extractErrors(text.as_str());
+      match fs::write("errors.txt", errorLogs.join("\n")) {
+        Ok(..) => println!("Wrote error text"),
+        Err(msg) => println!("Error: {}", msg)
+      }
     }
     Err(errMsg) => {
-      println!("{}", errMsg)
+      println!("{}", errMsg);
     }
   }
+
+  println!("{:#?}", errorLogs);
 }

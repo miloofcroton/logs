@@ -50,20 +50,28 @@ fn main() {
   //   Err(errMsg) => println!("{}", errMsg),
   // }
 
-  let mut errorLogs = vec![];
+  // let mut errorLogs = vec![];
 
-  match fs::read_to_string("logs.txt") {
-    Ok(text) => {
-      errorLogs = extractErrors(text.as_str());
-      match fs::write("errors.txt", errorLogs.join("\n")) {
-        Ok(..) => println!("Wrote error text"),
-        Err(msg) => println!("Error: {}", msg)
-      }
-    }
-    Err(errMsg) => {
-      println!("{}", errMsg);
-    }
-  }
+  // match fs::read_to_string("logs.txt") {
+  //   Ok(text) => {
+  //     errorLogs = extractErrors(text.as_str());
+  //     match fs::write("errors.txt", errorLogs.join("\n")) {
+  //       Ok(..) => println!("Wrote error text"),
+  //       Err(msg) => println!("Error: {}", msg)
+  //     }
+  //   }
+  //   Err(errMsg) => {
+  //     println!("{}", errMsg);
+  //   }
+  // }
 
-  println!("{:#?}", errorLogs);
+  // println!("{:#?}", errorLogs);
+
+  let text = fs::read_to_string("logs.txt")
+    .expect("failed to read logs.txt");
+
+  let errorLogs = extractErrors(text.as_str());
+
+  fs::write("errors.txt", errorLogs.join("\n"))
+    .expect("failed to write errors.txt");
 }

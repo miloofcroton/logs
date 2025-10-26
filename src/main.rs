@@ -35,7 +35,7 @@ fn extractErrors(text: &str) -> Vec<String> {
   return results;
 }
 
-fn main() {
+fn main() -> Result<(), Error> {
   // match divide(5.0, 0.0) {
   //   Ok(result) => {
   //     println!("{}", result)
@@ -67,11 +67,16 @@ fn main() {
 
   // println!("{:#?}", errorLogs);
 
-  let text = fs::read_to_string("logs.txt")
-    .expect("failed to read logs.txt");
+  // let text = fs::read_to_string("logs.txt")
+  //   .expect("failed to read logs.txt");
 
+  // let errorLogs = extractErrors(text.as_str());
+
+  // fs::write("errors.txt", errorLogs.join("\n"))
+  //   .expect("failed to write errors.txt");
+
+  let text = fs::read_to_string("logs.txt")?;
   let errorLogs = extractErrors(text.as_str());
-
-  fs::write("errors.txt", errorLogs.join("\n"))
-    .expect("failed to write errors.txt");
+  fs::write("errors.txt", errorLogs.join("\n"))?;
+  return Ok(());
 }
